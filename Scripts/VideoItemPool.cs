@@ -15,6 +15,7 @@ public class VideoItemPool : MonoBehaviour
         {
             if (!item.gameObject.activeSelf)
             {
+                Debug.Log($"[VideoItemPool] Reusing pooled item → {item.name}");
                 item.gameObject.SetActive(true);
                 return item;
             }
@@ -24,15 +25,21 @@ public class VideoItemPool : MonoBehaviour
         var newItem = Instantiate(prefab, parent);
         newItem.transform.localScale = Vector3.one;
         pool.Add(newItem);
+
+        Debug.Log($"[VideoItemPool] Created NEW pooled item → {newItem.name}. Total Count: {pool.Count}");
         return newItem;
     }
 
     public void ReturnAllObjects()
     {
+        Debug.Log($"[VideoItemPool] Returning ALL items to pool. Count: {pool.Count}");
+
         foreach (var item in pool)
         {
-            // stop video if needed
-            //item.StopVideoIfPlaying?.Invoke();
+            if (item.gameObject.activeSelf)
+            {
+                Debug.Log($"[VideoItemPool] Deactivating → {item.name}");
+            }
 
             item.gameObject.SetActive(false);
         }
@@ -40,6 +47,7 @@ public class VideoItemPool : MonoBehaviour
 
     public List<VideoItemUI> GetPool()
     {
+        Debug.Log($"[VideoItemPool] Pool Requested. Total items stored: {pool.Count}");
         return pool;
     }
 }

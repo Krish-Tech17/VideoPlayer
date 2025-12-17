@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Video;
 using UnityEngine.UI;
+using System.Collections;
 
 public class VideoPlayerController : MonoBehaviour
 {
@@ -47,19 +48,68 @@ public class VideoPlayerController : MonoBehaviour
 
     }
 
+    void OnEnable()
+    {
+        videoPlayer.started += OnPlaybackStarted;
+        videoPlayer.loopPointReached += OnPlaybackCompleted;
+
+    }
+
+    void OnDisable()
+    {
+        videoPlayer.started -= OnPlaybackStarted;
+        videoPlayer.loopPointReached -= OnPlaybackCompleted;
+    }
+
+    private void OnPlaybackStarted(VideoPlayer vp)
+    {
+        if (sliderRoutine != null)
+            StopCoroutine(sliderRoutine);
+
+        sliderRoutine = StartCoroutine(TrackVideoProgress());
+    }
+
+    private void OnPlaybackCompleted(VideoPlayer vp)
+    {
+        if (sliderRoutine != null)
+            StopCoroutine(sliderRoutine);
+
+        seekSlider.value = 1f; // end of video
+    }
+
+
     private void OnVideoFinished(VideoPlayer vp)
     {
         UpdatePlayPauseIcon();
     }
 
 
-    private void Update()
+    //private void Update()
+    //{
+    //    if (videoPlayer.isPlaying && !isDragging && videoPlayer.length > 0)
+    //    {
+    //        seekSlider.value = (float)(videoPlayer.time / videoPlayer.length);
+    //    }
+    //}
+
+    private void UpdateSeekSlider()
     {
-        if (videoPlayer.isPlaying && !isDragging && videoPlayer.length > 0)
+        if (isDragging || videoPlayer.length <= 0) return;
+
+        seekSlider.value = (float)(videoPlayer.time / videoPlayer.length);
+    }
+
+    private Coroutine sliderRoutine;
+
+    private IEnumerator TrackVideoProgress()
+    {
+        while (videoPlayer.isPlaying)
         {
-            seekSlider.value = (float)(videoPlayer.time / videoPlayer.length);
+            UpdateSeekSlider();
+            yield return null; // runs every frame only during playback
         }
     }
+
 
     public void PlayVideo(string url)
     {
@@ -104,6 +154,7 @@ public class VideoPlayerController : MonoBehaviour
         }
         isDragging = false;
     }
+
 
     // -------- FULLSCREEN ----------
     public void ToggleFullscreen()

@@ -45,19 +45,10 @@ public class VideoItemUI : MonoBehaviour
         VideoPlayerController.Instance.StopVideo();
     }
 
-
     private IEnumerator LoadThumbnail(string relativePath)
     {
-        string fullPath = System.IO.Path.Combine(
-            Application.streamingAssetsPath,
-            relativePath
-        );
-
-#if UNITY_ANDROID && !UNITY_EDITOR
-        fullPath = "jar:file://" + fullPath;
-#else
-        fullPath = "file://" + fullPath;
-#endif
+        // Build full local path from StreamingAssets
+        string fullPath = $"file://{Application.streamingAssetsPath}/{relativePath}";
 
         using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(fullPath))
         {
@@ -65,7 +56,7 @@ public class VideoItemUI : MonoBehaviour
 
             if (request.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError("Thumbnail load failed: " + request.error);
+                Debug.LogError($"Thumbnail load failed ({relativePath}): {request.error}");
                 yield break;
             }
 
@@ -79,4 +70,7 @@ public class VideoItemUI : MonoBehaviour
             thumbnailImage.sprite = sprite;
         }
     }
+
+
+
 }
