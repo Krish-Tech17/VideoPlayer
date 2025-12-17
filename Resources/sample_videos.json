@@ -1,0 +1,28 @@
+{
+  "videos": [
+    {
+      "title": "Engine Assembly",
+      "description": "Step-by-step CF pump assembly process",
+      "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+      "thumbnailUrl": "Thumbnails/video1.jpg"
+    },
+    {
+      "title": "Engine Disassembly",
+      "description": "How to safely disassemble the CF pump",
+      "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+      "thumbnailUrl": "Thumbnails/video2.jpg"
+    },
+    {
+      "title": "Engine Assembly",
+      "description": "Step-by-step CF pump assembly process",
+      "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+      "thumbnailUrl": "Thumbnails/video3.jpg"
+    },
+    {
+      "title": "Engine Disassembly",
+      "description": "How to safely disassemble the CF pump",
+      "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+      "thumbnailUrl": "Thumbnails/video4.jpg"
+    }
+  ]
+}
